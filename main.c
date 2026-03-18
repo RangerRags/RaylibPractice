@@ -3,7 +3,9 @@
 int main(void) {
     InitWindow(1000,1000,"Window");
     int x=50,y=850;
+    int gameWon = 0;
     SetTargetFPS(60);
+    int currentMaze = 1;
     int maze[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,1,0,0,0,0,1},
@@ -19,18 +21,21 @@ int main(void) {
     int maze2[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,0,0,0,0,0,1},
-        {1,0,1,1,0,1,1,1,0,1},
+        {1,0,1,1,1,1,1,1,0,1},
         {1,0,1,0,0,0,0,1,0,1},
         {1,0,1,0,1,1,0,1,0,1},
         {1,0,0,0,1,0,0,0,0,1},
         {1,1,1,0,1,0,1,1,0,1},
-        {1,0,0,0,0,0,1,0,0,1},
-        {1,0,1,1,1,0,0,0,0,1},
+        {1,0,0,0,1,0,1,0,0,1},
+        {0,0,1,1,1,0,0,0,0,0},
         {1,1,1,1,1,1,1,1,1,1}
     };
     while (!WindowShouldClose()) {
-
-        if (x>=1000) {
+        if (x<=-1) {
+            x=0;
+            y=850;
+        }
+       /* if (x>=1000) {
             x=0;
         }
         if (x<=-1) {
@@ -42,6 +47,7 @@ int main(void) {
         if (y<=-1) {
             y=1000;
         }
+        */
         if (IsKeyDown(KEY_D)) {
             x+=10;
         }
@@ -64,49 +70,110 @@ int main(void) {
             }
         }
 */
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
-                if (maze[row][col] == 1) {
-                    int wallX= col * 100;
-                    int wallY = row * 100;
+        if (currentMaze==1) {
+            for (int row = 0; row < 10; row++) {
+                for (int col = 0; col < 10; col++) {
+                    if (maze[row][col] == 1) {
+                        int wallX= col * 100;
+                        int wallY = row * 100;
 
-                    if (x + 20 > wallX && x - 20 < wallX + 100 &&
-                        y + 20 > wallY && y - 20 < wallY + 100) {
+                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
+                            y + 20 > wallY && y - 20 < wallY + 100) {
 
-                        int overlapLeft  = (x + 20) - wallX;
-                        int overlapRight = (wallX + 100) - (x - 20);
-                        int overlapTop   = (y + 20) - wallY;
-                        int overlapBottom= (wallY + 100) - (y - 20);
+                            int overlapLeft  = (x + 20) - wallX;
+                            int overlapRight = (wallX + 100) - (x - 20);
+                            int overlapTop   = (y + 20) - wallY;
+                            int overlapBottom= (wallY + 100) - (y - 20);
 
-                        int minOverlap = overlapLeft;
-                        if (overlapRight < minOverlap)  minOverlap = overlapRight;
-                        if (overlapTop < minOverlap)    minOverlap = overlapTop;
-                        if (overlapBottom < minOverlap) minOverlap = overlapBottom;
+                            int minOverlap = overlapLeft;
+                            if (overlapRight < minOverlap)  minOverlap = overlapRight;
+                            if (overlapTop < minOverlap)    minOverlap = overlapTop;
+                            if (overlapBottom < minOverlap) minOverlap = overlapBottom;
 
-                        if (minOverlap == overlapLeft)       x = wallX - 20;
-                        else if (minOverlap == overlapRight) x = wallX + 100 + 20;
-                        else if (minOverlap == overlapTop)   y = wallY - 20;
-                        else                                 y = wallY + 100 + 20;
-                        }
+                            if (minOverlap == overlapLeft)       x = wallX - 20;
+                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
+                            else if (minOverlap == overlapTop)   y = wallY - 20;
+                            else                                 y = wallY + 100 + 20;
+                            }
+                    }
                 }
             }
         }
+        else if (currentMaze==2) {
+            for (int row = 0; row < 10; row++) {
+                for (int col = 0; col < 10; col++) {
+                    if (maze2[row][col] == 1) {
+                        int wallX= col * 100;
+                        int wallY = row * 100;
+
+                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
+                            y + 20 > wallY && y - 20 < wallY + 100) {
+
+                            int overlapLeft  = (x + 20) - wallX;
+                            int overlapRight = (wallX + 100) - (x - 20);
+                            int overlapTop   = (y + 20) - wallY;
+                            int overlapBottom= (wallY + 100) - (y - 20);
+
+                            int minOverlap = overlapLeft;
+                            if (overlapRight < minOverlap)  minOverlap = overlapRight;
+                            if (overlapTop < minOverlap)    minOverlap = overlapTop;
+                            if (overlapBottom < minOverlap) minOverlap = overlapBottom;
+
+                            if (minOverlap == overlapLeft)       x = wallX - 20;
+                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
+                            else if (minOverlap == overlapTop)   y = wallY - 20;
+                            else                                 y = wallY + 100 + 20;
+                            }
+                    }
+                }
+            }
+        }
+
+
+
+        // in logic section
+        if (x >= 1000 && currentMaze == 1) {
+            currentMaze = 2;
+            x = 50; y = 850;
+        }
+        if (x >= 1000 && currentMaze == 2) {
+            gameWon = 1;
+        }
+
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
-                if (maze[row][col] == 1) {
-                    DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
-                }
-            }
-        }
 
+  if (currentMaze==1) {
+      for (int row = 0; row < 10; row++) {
+          for (int col = 0; col < 10; col++) {
+              if (maze[row][col] == 1) {
+                  DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
+              }
+          }
+      }
+  }
+   else if (currentMaze==2) {
+       if (currentMaze == 2 && x < 1000) {
+           for (int row = 0; row < 10; row++) {
+               for (int col = 0; col < 10; col++) {
+                   if (maze2[row][col] == 1) {
+                       DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
+                   }
+               }
+           }
+       }
+   }
+        if (gameWon) {
+            DrawText("YOU WIN!!", 200, 400, 100, GREEN);
+        } else {
+            // all your normal drawing code
+            DrawCircle(x, y, 20, BLACK);
+            // draw maze etc
+        }
         DrawText(TextFormat("x: %d y: %d", x, y), 10, 10, 20, GREEN);
-        //DrawText("Suck My Balls",350,350,20,BLUE);
        // DrawLine(0,300,400,300,RED);
        // DrawLine(500,0,500,800,RED);
-        DrawCircle(x,y,20,BLACK);
         EndDrawing();
     }
     CloseWindow();
