@@ -94,24 +94,23 @@ int main(void) {
                         int wallX= col * 100;
                         int wallY = row * 100;
 
-                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
-                            y + 20 > wallY && y - 20 < wallY + 100) {
+                        if (x + 30 > wallX && x - 30 < wallX + 100 &&
+     y + 30 > wallY && y - 30 < wallY + 100) {
 
-
-                            int overlapLeft  = (x + 20) - wallX;
-                            int overlapRight = (wallX + 100) - (x - 20);
-                            int overlapTop   = (y + 20) - wallY;
-                            int overlapBottom= (wallY + 100) - (y - 20);
+                            int overlapLeft   = (x + 30) - wallX;
+                            int overlapRight  = (wallX + 100) - (x - 30);
+                            int overlapTop    = (y + 30) - wallY;
+                            int overlapBottom = (wallY + 100) - (y - 30);
 
                             int minOverlap = overlapLeft;
                             if (overlapRight < minOverlap)  minOverlap = overlapRight;
                             if (overlapTop < minOverlap)    minOverlap = overlapTop;
                             if (overlapBottom < minOverlap) minOverlap = overlapBottom;
 
-                            if (minOverlap == overlapLeft)       x = wallX - 20;
-                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
-                            else if (minOverlap == overlapTop)   y = wallY - 20;
-                            else                                 y = wallY + 100 + 20;
+                            if (minOverlap == overlapLeft)       x = wallX - 30;
+                            else if (minOverlap == overlapRight) x = wallX + 100 + 30;
+                            else if (minOverlap == overlapTop)   y = wallY - 30;
+                            else                                 y = wallY + 100 + 30;
                             }
                     }
                 }
@@ -123,7 +122,7 @@ int main(void) {
       for (int row = 0; row < 10; row++) {
           for (int col = 0; col < 10; col++) {
               if (activeMaze[row][col] == 1) {
-                  Rectangle dest = {col * 100, row * 100, 90, 90};
+                  Rectangle dest = {col * 100, row * 100, 100, 100};
                   Rectangle source = {0, 0, wallTexture.width, wallTexture.height};
                   DrawTexturePro(wallTexture, source, dest, (Vector2){0, 0}, 0, WHITE);
               }
@@ -145,7 +144,7 @@ int main(void) {
             else currentTexture = &guyRIGHT;
 
             Rectangle source = {0, 0, currentTexture->width, currentTexture->height};
-            Rectangle dest = {x - 20, y - 20, 40, 40};
+            Rectangle dest = {x - 30, y - 30, 60, 60};
             DrawTexturePro(*currentTexture, source, dest, (Vector2){0, 0}, 0, WHITE);
             camera.target = (Vector2){x, y};
         }
