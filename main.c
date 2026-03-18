@@ -5,13 +5,17 @@ int main(void) {
     int x=50,y=850;
     int gameWon = 0;
     SetTargetFPS(60);
+    int lastDirection = 0;
     int currentMaze = 1;
     Camera2D camera = {0};
     camera.target = (Vector2){x, y};    // what the camera follows
     camera.offset = (Vector2){500, 500}; // center of screen
     camera.zoom = 1.0f;
     Texture2D wallTexture = LoadTexture("purpleBrick.png");
-
+    Texture2D guyUP = LoadTexture("guyUP.png");
+    Texture2D guyDOWN = LoadTexture("guyDOWN.png");
+    Texture2D guyLEFT = LoadTexture("guyLEFT.png");
+    Texture2D guyRIGHT = LoadTexture("guyRIGHT.png");
     int maze[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,1,0,0,0,0,1},
@@ -129,7 +133,20 @@ int main(void) {
             DrawText("YOU WIN!!", 200, 400, 100, GREEN);
             camera.target = (Vector2){500, 500};
         } else {
-            DrawCircle(x, y, 20, DARKBLUE);
+            if (IsKeyDown(KEY_D)) lastDirection = 3;
+            else if (IsKeyDown(KEY_A)) lastDirection = 2;
+            else if (IsKeyDown(KEY_S)) lastDirection = 0;
+            else if (IsKeyDown(KEY_W)) lastDirection = 1;
+
+            Texture2D *currentTexture;
+            if (lastDirection == 0) currentTexture = &guyDOWN;
+            else if (lastDirection == 1) currentTexture = &guyUP;
+            else if (lastDirection == 2) currentTexture = &guyLEFT;
+            else currentTexture = &guyRIGHT;
+
+            Rectangle source = {0, 0, currentTexture->width, currentTexture->height};
+            Rectangle dest = {x - 20, y - 20, 40, 40};
+            DrawTexturePro(*currentTexture, source, dest, (Vector2){0, 0}, 0, WHITE);
             camera.target = (Vector2){x, y};
         }
 
