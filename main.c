@@ -6,6 +6,11 @@ int main(void) {
     int gameWon = 0;
     SetTargetFPS(60);
     int currentMaze = 1;
+    Camera2D camera = {0};
+    camera.target = (Vector2){x, y};    // what the camera follows
+    camera.offset = (Vector2){500, 500}; // center of screen
+    camera.zoom = 1.0f;
+
     int maze[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,1,0,0,0,0,1},
@@ -87,6 +92,7 @@ int main(void) {
                         if (x + 20 > wallX && x - 20 < wallX + 100 &&
                             y + 20 > wallY && y - 20 < wallY + 100) {
 
+
                             int overlapLeft  = (x + 20) - wallX;
                             int overlapRight = (wallX + 100) - (x - 20);
                             int overlapTop   = (y + 20) - wallY;
@@ -105,52 +111,32 @@ int main(void) {
                     }
                 }
             }
-
-        // in logic section
-
-
-
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        BeginMode2D(camera);
 
-  if (currentMaze==1) {
       for (int row = 0; row < 10; row++) {
           for (int col = 0; col < 10; col++) {
-              if (maze[row][col] == 1) {
+              if (activeMaze[row][col] == 1) {
                   DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
               }
           }
       }
-  }
-   else if (currentMaze==2) {
-       if (currentMaze == 2 && x < 1000) {
-           for (int row = 0; row < 10; row++) {
-               for (int col = 0; col < 10; col++) {
-                   if (maze2[row][col] == 1) {
-                       DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
-                   }
-               }
-           }
-       }
-   }
         if (gameWon) {
             DrawText("YOU WIN!!", 200, 400, 100, GREEN);
+            camera.target = (Vector2){500, 500};
         } else {
-            // all your normal drawing code
             DrawCircle(x, y, 20, BLACK);
-            // draw maze etc
+            camera.target = (Vector2){x, y};
         }
+
         DrawText(TextFormat("x: %d y: %d", x, y), 10, 10, 20, GREEN);
        // DrawLine(0,300,400,300,RED);
        // DrawLine(500,0,500,800,RED);
+        EndMode2D();
         EndDrawing();
     }
     CloseWindow();
-
-
-
-
-
     return 0;
 }
 
