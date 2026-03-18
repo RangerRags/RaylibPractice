@@ -70,68 +70,6 @@ int main(void) {
             }
         }
 */
-        if (currentMaze==1) {
-            for (int row = 0; row < 10; row++) {
-                for (int col = 0; col < 10; col++) {
-                    if (maze[row][col] == 1) {
-                        int wallX= col * 100;
-                        int wallY = row * 100;
-
-                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
-                            y + 20 > wallY && y - 20 < wallY + 100) {
-
-                            int overlapLeft  = (x + 20) - wallX;
-                            int overlapRight = (wallX + 100) - (x - 20);
-                            int overlapTop   = (y + 20) - wallY;
-                            int overlapBottom= (wallY + 100) - (y - 20);
-
-                            int minOverlap = overlapLeft;
-                            if (overlapRight < minOverlap)  minOverlap = overlapRight;
-                            if (overlapTop < minOverlap)    minOverlap = overlapTop;
-                            if (overlapBottom < minOverlap) minOverlap = overlapBottom;
-
-                            if (minOverlap == overlapLeft)       x = wallX - 20;
-                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
-                            else if (minOverlap == overlapTop)   y = wallY - 20;
-                            else                                 y = wallY + 100 + 20;
-                            }
-                    }
-                }
-            }
-        }
-        else if (currentMaze==2) {
-            for (int row = 0; row < 10; row++) {
-                for (int col = 0; col < 10; col++) {
-                    if (maze2[row][col] == 1) {
-                        int wallX= col * 100;
-                        int wallY = row * 100;
-
-                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
-                            y + 20 > wallY && y - 20 < wallY + 100) {
-
-                            int overlapLeft  = (x + 20) - wallX;
-                            int overlapRight = (wallX + 100) - (x - 20);
-                            int overlapTop   = (y + 20) - wallY;
-                            int overlapBottom= (wallY + 100) - (y - 20);
-
-                            int minOverlap = overlapLeft;
-                            if (overlapRight < minOverlap)  minOverlap = overlapRight;
-                            if (overlapTop < minOverlap)    minOverlap = overlapTop;
-                            if (overlapBottom < minOverlap) minOverlap = overlapBottom;
-
-                            if (minOverlap == overlapLeft)       x = wallX - 20;
-                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
-                            else if (minOverlap == overlapTop)   y = wallY - 20;
-                            else                                 y = wallY + 100 + 20;
-                            }
-                    }
-                }
-            }
-        }
-
-
-
-        // in logic section
         if (x >= 1000 && currentMaze == 1) {
             currentMaze = 2;
             x = 50; y = 850;
@@ -139,6 +77,37 @@ int main(void) {
         if (x >= 1000 && currentMaze == 2) {
             gameWon = 1;
         }
+        int (*activeMaze)[10] = (currentMaze == 1) ? maze : maze2;
+            for (int row = 0; row < 10; row++) {
+                for (int col = 0; col < 10; col++) {
+                    if (activeMaze[row][col] == 1) {
+                        int wallX= col * 100;
+                        int wallY = row * 100;
+
+                        if (x + 20 > wallX && x - 20 < wallX + 100 &&
+                            y + 20 > wallY && y - 20 < wallY + 100) {
+
+                            int overlapLeft  = (x + 20) - wallX;
+                            int overlapRight = (wallX + 100) - (x - 20);
+                            int overlapTop   = (y + 20) - wallY;
+                            int overlapBottom= (wallY + 100) - (y - 20);
+
+                            int minOverlap = overlapLeft;
+                            if (overlapRight < minOverlap)  minOverlap = overlapRight;
+                            if (overlapTop < minOverlap)    minOverlap = overlapTop;
+                            if (overlapBottom < minOverlap) minOverlap = overlapBottom;
+
+                            if (minOverlap == overlapLeft)       x = wallX - 20;
+                            else if (minOverlap == overlapRight) x = wallX + 100 + 20;
+                            else if (minOverlap == overlapTop)   y = wallY - 20;
+                            else                                 y = wallY + 100 + 20;
+                            }
+                    }
+                }
+            }
+
+        // in logic section
+
 
 
         BeginDrawing();
@@ -184,6 +153,7 @@ int main(void) {
 
     return 0;
 }
+
 
 
 
