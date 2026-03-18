@@ -10,6 +10,7 @@ int main(void) {
     camera.target = (Vector2){x, y};    // what the camera follows
     camera.offset = (Vector2){500, 500}; // center of screen
     camera.zoom = 1.0f;
+    Texture2D wallTexture = LoadTexture("purpleBrick.png");
 
     int maze[10][10] = {
         {1,1,1,1,1,1,1,1,1,1},
@@ -112,13 +113,15 @@ int main(void) {
                 }
             }
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
         BeginMode2D(camera);
 
       for (int row = 0; row < 10; row++) {
           for (int col = 0; col < 10; col++) {
               if (activeMaze[row][col] == 1) {
-                  DrawRectangle(col * 100, row * 100, 90, 90, BLACK);
+                  Rectangle dest = {col * 100, row * 100, 90, 90};
+                  Rectangle source = {0, 0, wallTexture.width, wallTexture.height};
+                  DrawTexturePro(wallTexture, source, dest, (Vector2){0, 0}, 0, WHITE);
               }
           }
       }
@@ -126,7 +129,7 @@ int main(void) {
             DrawText("YOU WIN!!", 200, 400, 100, GREEN);
             camera.target = (Vector2){500, 500};
         } else {
-            DrawCircle(x, y, 20, BLACK);
+            DrawCircle(x, y, 20, DARKBLUE);
             camera.target = (Vector2){x, y};
         }
 
@@ -136,6 +139,7 @@ int main(void) {
         EndMode2D();
         EndDrawing();
     }
+    UnloadTexture(wallTexture);
     CloseWindow();
     return 0;
 }
